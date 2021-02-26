@@ -1,6 +1,8 @@
 package com.example.kerryliau.demo.controller;
 
 import com.example.kerryliau.demo.entity.JsonObject;
+import com.example.kerryliau.demo.entity.Response;
+import com.example.kerryliau.demo.service.HelloService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,26 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/Hello")
 public class HelloController {
-    private ObjectMapper JsonMapper;
+    private ObjectMapper jsonMapper;
+    private HelloService helloService;
 
-    public HelloController(ObjectMapper jsonMapper) {
-        JsonMapper = jsonMapper;
-        JsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
+    public HelloController(ObjectMapper jsonMapper, HelloService helloService) {
+        this.jsonMapper = jsonMapper;
+        this.jsonMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        this.helloService = helloService;
     }
 
     @GetMapping("/{someThing}")
     @ResponseBody
-    public JsonObject hello(@PathVariable("someThing") String someThing) throws JsonProcessingException {
-        var response = new JsonObject();
-        response.put("code", 0);
-        response.put("message", "ok");
-
-        var data = new JsonObject();
-        data.put("input", someThing);
-
-        response.put("data", data);
-        System.out.println(JsonMapper.writeValueAsString(response));
-        return response;
+    public Response<JsonObject> hello(@PathVariable("someThing") String someThing) throws JsonProcessingException {
+        var response = helloService.hello(someThing);
+        return Response.ok(response);
     }
 
 }
