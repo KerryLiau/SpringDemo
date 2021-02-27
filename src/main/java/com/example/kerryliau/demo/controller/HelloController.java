@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,10 +25,15 @@ public class HelloController {
     }
 
     @GetMapping("/{someThing}")
-    @ResponseBody
     public Response<JsonObject> hello(@PathVariable("someThing") String someThing) throws JsonProcessingException {
         var response = helloService.hello(someThing);
         return Response.ok(response);
+    }
+
+    @GetMapping("/test-array/{array}")
+    public Response<JsonObject> printArray(@PathVariable("array") Integer[] array) {
+        helloService.testCircleNode(array);
+        return Response.ok();
     }
 
 }
