@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     private ObjectMapper jsonMapper;
     private HelloService helloService;
+    
 
     public HelloController(ObjectMapper jsonMapper, HelloService helloService) {
         this.jsonMapper = jsonMapper;
@@ -34,6 +35,16 @@ public class HelloController {
     public Response<JsonObject> printArray(@PathVariable("array") Integer[] array) {
         helloService.testCircleNode(array);
         return Response.ok();
+    }
+
+    @GetMapping("/hello-postgresql")
+    public Response<JsonObject> helloPostgres() {
+        return Response.ok(helloService.findAllHelloData());
+    }
+
+    @GetMapping("/hello-postgresql/{id}")
+    public Response<JsonObject> helloPostgres(@PathVariable("id") int id) {
+        return Response.ok(helloService.findHelloById(id));
     }
 
 }
