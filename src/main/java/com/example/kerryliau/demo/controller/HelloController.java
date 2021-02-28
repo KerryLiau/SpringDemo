@@ -1,16 +1,16 @@
 package com.example.kerryliau.demo.controller;
 
+import java.util.List;
+
 import com.example.kerryliau.demo.entity.JsonObject;
 import com.example.kerryliau.demo.entity.Response;
+import com.example.kerryliau.demo.entity.dto.TwoInt32;
 import com.example.kerryliau.demo.service.HelloService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Hello")
@@ -31,20 +31,36 @@ public class HelloController {
         return Response.ok(response);
     }
 
-    @GetMapping("/test-array/{array}")
+    @GetMapping("/array/{array}")
     public Response<JsonObject> printArray(@PathVariable("array") Integer[] array) {
         helloService.testCircleNode(array);
         return Response.ok();
     }
 
-    @GetMapping("/hello-postgresql")
-    public Response<JsonObject> helloPostgres() {
+    @GetMapping("/hello-all")
+    public Response<List<JsonObject>> helloPostgres() {
         return Response.ok(helloService.findAllHelloData());
     }
 
-    @GetMapping("/hello-postgresql/{id}")
+    @GetMapping("/hello/{id}")
     public Response<JsonObject> helloPostgres(@PathVariable("id") int id) {
         return Response.ok(helloService.findHelloById(id));
+    }
+
+    @PutMapping("/hello-new/{id}/{name}")
+    public Response<JsonObject> newHello(@PathVariable("id") int id, @PathVariable("name") String name) {
+        helloService.newHello(id, name);
+        return Response.ok();
+    }
+
+    @PostMapping("/hello-procedure-add")
+    public Response<JsonObject> helloProcedureAdd(@RequestBody TwoInt32 param) {
+        return Response.ok(helloService.helloProcedureAdd(param));
+    }
+
+    @PostMapping("/hello-procedure-max")
+    public Response<JsonObject> helloProcedureMax(@RequestBody TwoInt32 param) {
+        return Response.ok(helloService.helloProcedureMax(param));
     }
 
 }

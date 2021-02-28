@@ -1,6 +1,9 @@
 package com.example.kerryliau.demo.service;
 
+import java.util.List;
+
 import com.example.kerryliau.demo.entity.JsonObject;
+import com.example.kerryliau.demo.entity.dto.TwoInt32;
 import com.example.kerryliau.demo.mapper.HelloMapper;
 import com.grandsages.utils.CircleNode;
 
@@ -30,11 +33,23 @@ public class HelloService {
 		return data;
 	}
 
-	public JsonObject findAllHelloData() {
+	public List<JsonObject> findAllHelloData() {
 		return helloMapper.selectAllFromHello();
 	}
 
 	public JsonObject findHelloById(int id) {
 		return helloMapper.selectHelloById(id);
+	}
+
+	public void newHello(int id, String name) {
+		helloMapper.insertHello(id, name);
+	}
+
+	public JsonObject helloProcedureAdd(TwoInt32 param) {
+		return helloMapper.helloProcedureAdd(param);
+	}
+
+	public JsonObject helloProcedureMax(TwoInt32 param) {
+		return helloMapper.helloProcedureMax(param);
 	}
 }
