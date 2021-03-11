@@ -22,8 +22,8 @@ public class HelloMapperProvider {
     public String insertHello(int id, String name) {
         var sql = new SQL();
         sql.INSERT_INTO(MAIN_TABLE)
-            .INTO_COLUMNS("id", "str_data")
-            .INTO_VALUES(String.valueOf(id), addQuote(name))
+            .VALUES("id", "#{id}")
+            .VALUES("str_data", "#{name}")
         ;
         return sql.toString();
     }
@@ -34,9 +34,5 @@ public class HelloMapperProvider {
 
     public String callSpMax(TwoInt32 param) {
         return "CALL grand_sages_demo.sp_max(#{intA}, #{intB}, #{intResult})";
-    }
-
-    private String addQuote(String string) {
-        return "'" + string + "'";
     }
 }
